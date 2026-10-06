@@ -1,53 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:ota_test/pages/page_two.dart';
+import 'package:ota_test/features/my_home_page/provider/my_home_page_provider.dart';
+import 'package:ota_test/features/page_two/view/page_two.dart';
+import 'package:provider/provider.dart';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  void _decrementtCounter() {
-    setState(() {
-      _counter--;
-    });
-  }
+class MyHomePage extends StatelessWidget {
+  const MyHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<MyHomePageProvider>();
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: Text("This is a OTA Test App"),
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: .center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text('You have pushed the button this many times:'),
             Text(
-              '$_counter',
+              '${provider.counter}',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-            SizedBox(height: 16),
-
+            const SizedBox(height: 16),
             ElevatedButton(
-              onPressed: _decrementtCounter,
+              onPressed: () => context.read<MyHomePageProvider>().decrement(),
               child: const Text('Decrement'),
             ),
-
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -55,9 +37,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   MaterialPageRoute(builder: (context) => const PageTwo()),
                 );
               },
-              child: const Text('go to page two'),
+              child: const Text('Go to Page Two'),
             ),
-
             Text(
               'this is patch 2 updated',
               style: Theme.of(context).textTheme.headlineMedium,
@@ -66,11 +47,10 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () => context.read<MyHomePageProvider>().increment(),
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
     );
   }
 }
-// shorebird patch android

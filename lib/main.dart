@@ -1,22 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:ota_test/pages/my_home_page.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ota_test/core/multi_provider.dart';
+import 'package:ota_test/features/my_home_page/view/my_home_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const OtaApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class OtaApp extends StatelessWidget {
+  const OtaApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+    return AppMultiProvider(
+      child: ScreenUtilInit(
+        designSize: const Size(375, 812),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        child: MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          ),
+          home: const MyHomePage(),
+        ),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
