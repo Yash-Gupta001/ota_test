@@ -13,7 +13,7 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text("This is a OTA Test App"),
+        title: Text("This is a OTA Test App 2"),
       ),
       body: Center(
         child: Column(
