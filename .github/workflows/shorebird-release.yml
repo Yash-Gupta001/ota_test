@@ -1,11 +1,10 @@
-name: Shorebird Patch
+name: Shorebird Release
 
 on:
-  push:
-    branches: [shorebird]
+  workflow_dispatch:  # run manually from GitHub Actions tab
 
 jobs:
-  patch:
+  release:
     runs-on: ubuntu-latest
     env:
       SHOREBIRD_TOKEN: ${{ secrets.SHOREBIRD_TOKEN }}
@@ -25,9 +24,15 @@ jobs:
         with:
           cache: true
 
-      - name: Shorebird Patch Android
-        uses: shorebirdtech/shorebird-patch@v1
+      - name: Shorebird Release Android (APK)
+        uses: shorebirdtech/shorebird-release@v0
         with:
           platform: android
-          release-version: latest
-          args: --allow-asset-diffs
+          args: --artifact=apk
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: shorebird-release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+          retention-days: 30
