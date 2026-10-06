@@ -25,8 +25,22 @@ jobs:
         with:
           cache: true
 
+      - name: Shorebird Release Android (APK)
+        uses: shorebirdtech/shorebird-release@v0
+        with:
+          platform: android
+          args: --artifact=apk
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: shorebird-release-apk
+          path: build/app/outputs/apk/release/app-release.apk
+          retention-days: 30
+
       - name: Shorebird Patch Android
         uses: shorebirdtech/shorebird-patch@v1
         with:
           platform: android
           release-version: latest
+          args: --allow-asset-diffs
