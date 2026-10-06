@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ota_test/features/map/provider/map_provider.dart';
 import 'package:ota_test/features/my_home_page/provider/my_home_page_provider.dart';
 import 'package:ota_test/features/page_two/provider/page_two_provider.dart';
 import 'package:ota_test/features/update/provider/update_provider.dart';
@@ -16,6 +17,7 @@ class AppMultiProvider extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => UpdateProvider()),
         ChangeNotifierProvider(create: (_) => MyHomePageProvider()),
         ChangeNotifierProvider(create: (_) => PageTwoProvider()),
+        ChangeNotifierProvider(create: (_) => MapProvider()),
       ],
       child: child,
     );

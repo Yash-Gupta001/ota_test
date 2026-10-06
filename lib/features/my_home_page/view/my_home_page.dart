@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ota_test/features/map/view/map_screen.dart';
 import 'package:ota_test/features/my_home_page/provider/my_home_page_provider.dart';
 import 'package:ota_test/features/page_two/view/page_two.dart';
 import 'package:provider/provider.dart';
@@ -38,6 +39,16 @@ class MyHomePage extends StatelessWidget {
                 );
               },
               child: const Text('Go to Page Two'),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MapScreen()),
+                );
+              },
+              child: const Text('Go to Map'),
             ),
             Text(
               'this is patch 2 updated',

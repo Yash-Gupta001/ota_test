@@ -37,6 +37,9 @@ dependencies:
   flutter_screenutil: ^5.9.3
   provider: ^6.1.5+1
   shorebird_code_push: ^2.0.7
+  flutter_map: ^8.3.2
+  latlong2: ^0.10.1
+  http: ^1.6.0
 
 dev_dependencies:
   flutter_test:
