@@ -33,7 +33,7 @@ class PageTwo extends StatelessWidget {
                   leading: CircleAvatar(
                     backgroundColor: Colors.deepPurple,
                     child: Text(
-                      '${index + 1}',
+                      'yedbejdn',
                       style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,

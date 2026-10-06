@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class PageTwoProvider extends ChangeNotifier {
-  final List<String> _items = List.generate(100, (i) => 'Item ${i + 1}');
+  final List<String> _items = List.generate(10, (i) => 'Item ${i + 1}');
 
   List<String> get items => _items;
 
