@@ -5,19 +5,17 @@ class PageTwo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ListView.builder(
-          itemCount: 10,
-          itemBuilder: (context, index) {
-            return Container(
-              height: 50,
-              color: Colors.blue,
-              child: Center(child: Text('Item $index')),
-            );
-          },
-        ),
-      ],
+    return Expanded(
+      child: ListView.builder(
+        itemCount: 10,
+        itemBuilder: (context, index) {
+          return Container(
+            height: 50,
+            color: Colors.blue,
+            child: Center(child: Text('Item $index')),
+          );
+        },
+      ),
     );
   }
 }
