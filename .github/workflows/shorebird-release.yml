@@ -1,7 +1,7 @@
 name: Shorebird Release
 
 on:
-  workflow_dispatch:  # run manually from GitHub Actions tab
+  workflow_dispatch:
 
 jobs:
   release:
@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Git Checkout
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -23,6 +25,21 @@ jobs:
         uses: shorebirdtech/setup-shorebird@v1
         with:
           cache: true
+
+      - name: Auto bump build number in pubspec.yaml
+        run: |
+          OLD=$(grep '^version:' pubspec.yaml | sed 's/version: //')
+          NAME=$(echo $OLD | cut -d'+' -f1)
+          BUILD=$(echo $OLD | cut -d'+' -f2)
+          NEW_BUILD=$((BUILD + 1))
+          NEW_VERSION="${NAME}+${NEW_BUILD}"
+          sed -i "s/^version: .*/version: $NEW_VERSION/" pubspec.yaml
+          echo "Bumped version from $OLD to $NEW_VERSION"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add pubspec.yaml
+          git commit -m "chore: bump build number to $NEW_VERSION [skip ci]"
+          git push
 
       - name: Shorebird Release Android (APK)
         uses: shorebirdtech/shorebird-release@v0
