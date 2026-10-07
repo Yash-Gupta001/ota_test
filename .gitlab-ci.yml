@@ -17,7 +17,7 @@ shorebird-release:
     - mv /root/android/cmdline-tools/cmdline-tools /root/android/cmdline-tools/latest
     - export ANDROID_HOME=/root/android
     - export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH"
-    - yes | sdkmanager --licenses > /dev/null 2>&1
+    - yes | sdkmanager --licenses > /dev/null 2>&1 || true
     - sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
     - curl --proto '=https' --tlsv1.2 https://raw.githubusercontent.com/shorebirdtech/install/main/install.sh -sSf | bash
     - export PATH="$HOME/.shorebird/bin:$PATH"
@@ -49,7 +49,7 @@ shorebird-patch:
     - mv /root/android/cmdline-tools/cmdline-tools /root/android/cmdline-tools/latest
     - export ANDROID_HOME=/root/android
     - export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH"
-    - yes | sdkmanager --licenses > /dev/null 2>&1
+    - yes | sdkmanager --licenses > /dev/null 2>&1 || true
     - sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
     - curl --proto '=https' --tlsv1.2 https://raw.githubusercontent.com/shorebirdtech/install/main/install.sh -sSf | bash
     - export PATH="$HOME/.shorebird/bin:$PATH"
