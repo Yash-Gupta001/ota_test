@@ -3,16 +3,6 @@ stages:
   - patch
 
 # ──────────────────────────────────────────────
-# Common setup anchors
-# ──────────────────────────────────────────────
-.setup_java: &setup_java
-  - apt-get update -qq && apt-get install -y -qq curl unzip openjdk-17-jdk-headless git
-
-.setup_shorebird: &setup_shorebird
-  - curl --proto '=https' --tlsv1.2 https://raw.githubusercontent.com/shorebirdtech/install/main/install.sh -sSf | bash
-  - export PATH="$HOME/.shorebird/bin:$PATH"
-
-# ──────────────────────────────────────────────
 # Shorebird Release  (manual trigger)
 # ──────────────────────────────────────────────
 shorebird-release:
@@ -21,11 +11,11 @@ shorebird-release:
   when: manual
   variables:
     SHOREBIRD_TOKEN: $SHOREBIRD_TOKEN
-    # Allow the job to push back a bumped pubspec.yaml
     GIT_DEPTH: 0
   before_script:
-    - *setup_java
-    - *setup_shorebird
+    - apt-get update -qq && apt-get install -y -qq curl unzip openjdk-17-jdk-headless git
+    - curl --proto '=https' --tlsv1.2 https://raw.githubusercontent.com/shorebirdtech/install/main/install.sh -sSf | bash
+    - export PATH="$HOME/.shorebird/bin:$PATH"
   script:
     # Bump build number in pubspec.yaml
     - |
@@ -63,8 +53,9 @@ shorebird-patch:
   variables:
     SHOREBIRD_TOKEN: $SHOREBIRD_TOKEN
   before_script:
-    - *setup_java
-    - *setup_shorebird
+    - apt-get update -qq && apt-get install -y -qq curl unzip openjdk-17-jdk-headless git
+    - curl --proto '=https' --tlsv1.2 https://raw.githubusercontent.com/shorebirdtech/install/main/install.sh -sSf | bash
+    - export PATH="$HOME/.shorebird/bin:$PATH"
   script:
     - export PATH="$HOME/.shorebird/bin:$PATH"
     - shorebird patch android --release-version=latest --allow-asset-diffs
