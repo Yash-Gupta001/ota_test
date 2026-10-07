@@ -14,7 +14,7 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text("This is a OTA Test App 2"),
+        title: Text("This is a OTA Test App"),
       ),
       body: Center(
         child: Column(
@@ -52,8 +52,10 @@ class MyHomePage extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              'this is patch 2 updated',
-              style: Theme.of(context).textTheme.headlineMedium,
+              "Hi i am testing after migrating to gitlab",
+              style: Theme.of(context).textTheme.titleLarge,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
           ],
         ),
