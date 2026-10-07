@@ -8,6 +8,7 @@ shorebird-release:
   when: manual
 
   variables:
+    SHOREBIRD_TOKEN: $SHOREBIRD_TOKEN
     GIT_DEPTH: "0"
 
   before_script:
@@ -33,6 +34,9 @@ shorebird-patch:
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "shorebird"'
+
+  variables:
+    SHOREBIRD_TOKEN: $SHOREBIRD_TOKEN
 
   before_script:
     - apt-get update -qq && apt-get install -y -qq curl unzip openjdk-17-jdk-headless git
