@@ -52,9 +52,9 @@ class MyHomePage extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              "Hi i am testing after migrating to gitlab",
+              "Hi i am testing after migrating to gitlab and it is patch 2 test",
               style: Theme.of(context).textTheme.titleLarge,
-              maxLines: 2,
+              maxLines: 3,
               overflow: TextOverflow.ellipsis,
             ),
           ],
