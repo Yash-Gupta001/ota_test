@@ -6,34 +6,55 @@ shorebird-release:
   stage: release
   image: ubuntu:22.04
   when: manual
+
   variables:
-    SHOREBIRD_TOKEN: $SHOREBIRD_TOKEN
     GIT_DEPTH: "0"
+
   before_script:
-    - apt-get update -qq && apt-get install -y -qq curl unzip openjdk-17-jdk-headless git
+    - apt-get update -qq && apt-get install -y -qq curl unzip openjdk-17-jdk-headless git wget
+    - wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O /tmp/cmdtools.zip
+    - mkdir -p /root/android/cmdline-tools && unzip -q /tmp/cmdtools.zip -d /root/android/cmdline-tools
+    - mv /root/android/cmdline-tools/cmdline-tools /root/android/cmdline-tools/latest
+    - export ANDROID_HOME=/root/android
+    - export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH"
+    - yes | sdkmanager --licenses > /dev/null 2>&1 || true
+    - sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
     - curl --proto '=https' --tlsv1.2 https://raw.githubusercontent.com/shorebirdtech/install/main/install.sh -sSf | bash
     - export PATH="$HOME/.shorebird/bin:$PATH"
+
   script:
+    - export ANDROID_HOME=/root/android
+    - export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$HOME/.shorebird/bin:$PATH"
     - bash scripts/bump_version.sh
-    - export PATH="$HOME/.shorebird/bin:$PATH"
     - shorebird release android --artifact=apk
+
   artifacts:
     name: shorebird-release-apk
     paths:
       - build/app/outputs/flutter-apk/app-release.apk
     expire_in: 30 days
 
+
 shorebird-patch:
   stage: patch
   image: ubuntu:22.04
+
   rules:
     - if: '$CI_COMMIT_BRANCH == "shorebird"'
-  variables:
-    SHOREBIRD_TOKEN: $SHOREBIRD_TOKEN
+
   before_script:
-    - apt-get update -qq && apt-get install -y -qq curl unzip openjdk-17-jdk-headless git
+    - apt-get update -qq && apt-get install -y -qq curl unzip openjdk-17-jdk-headless git wget
+    - wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O /tmp/cmdtools.zip
+    - mkdir -p /root/android/cmdline-tools && unzip -q /tmp/cmdtools.zip -d /root/android/cmdline-tools
+    - mv /root/android/cmdline-tools/cmdline-tools /root/android/cmdline-tools/latest
+    - export ANDROID_HOME=/root/android
+    - export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH"
+    - yes | sdkmanager --licenses > /dev/null 2>&1 || true
+    - sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
     - curl --proto '=https' --tlsv1.2 https://raw.githubusercontent.com/shorebirdtech/install/main/install.sh -sSf | bash
     - export PATH="$HOME/.shorebird/bin:$PATH"
+
   script:
-    - export PATH="$HOME/.shorebird/bin:$PATH"
+    - export ANDROID_HOME=/root/android
+    - export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$HOME/.shorebird/bin:$PATH"
     - shorebird patch android --release-version=latest --allow-asset-diffs
