@@ -2,38 +2,31 @@ stages:
   - release
   - patch
 
-# ──────────────────────────────────────────────
-# Shorebird Release  (manual trigger)
-# ──────────────────────────────────────────────
 shorebird-release:
   stage: release
   image: ubuntu:22.04
   when: manual
   variables:
     SHOREBIRD_TOKEN: $SHOREBIRD_TOKEN
-    GIT_DEPTH: 0
+    GIT_DEPTH: "0"
   before_script:
     - apt-get update -qq && apt-get install -y -qq curl unzip openjdk-17-jdk-headless git
     - curl --proto '=https' --tlsv1.2 https://raw.githubusercontent.com/shorebirdtech/install/main/install.sh -sSf | bash
     - export PATH="$HOME/.shorebird/bin:$PATH"
   script:
-    # Bump build number in pubspec.yaml
-    - |
-      OLD=$(grep '^version:' pubspec.yaml | sed 's/version: //')
-      NAME=$(echo $OLD | cut -d'+' -f1)
-      BUILD=$(echo $OLD | cut -d'+' -f2)
-      NEW_BUILD=$((BUILD + 1))
-      NEW_VERSION="${NAME}+${NEW_BUILD}"
-      sed -i "s/^version: .*/version: $NEW_VERSION/" pubspec.yaml
-      echo "Bumped version from $OLD to $NEW_VERSION"
-    # Commit and push the bumped version back to the repo
+    - OLD=$(grep '^version:' pubspec.yaml | sed 's/version:[ ]*//')
+    - NAME=$(echo "$OLD" | cut -d'+' -f1)
+    - BUILD=$(echo "$OLD" | cut -d'+' -f2)
+    - NEW_BUILD=$((BUILD + 1))
+    - NEW_VERSION="${NAME}+${NEW_BUILD}"
+    - sed -i "s/^version:.*/version $NEW_VERSION/" pubspec.yaml
+    - echo "Bumped version from $OLD to $NEW_VERSION"
     - git config user.name "gitlab-ci[bot]"
     - git config user.email "gitlab-ci[bot]@noreply.gitlab.com"
     - git remote set-url origin "https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
     - git add pubspec.yaml
-    - git commit -m "chore: bump build number to $NEW_VERSION [skip ci]"
-    - git push origin HEAD:$CI_COMMIT_REF_NAME
-    # Run Shorebird release
+    - git commit -m "chore: bump build number to ${NEW_VERSION} [skip ci]"
+    - git push origin HEAD:${CI_COMMIT_REF_NAME}
     - export PATH="$HOME/.shorebird/bin:$PATH"
     - shorebird release android --artifact=apk
   artifacts:
@@ -42,9 +35,6 @@ shorebird-release:
       - build/app/outputs/flutter-apk/app-release.apk
     expire_in: 30 days
 
-# ──────────────────────────────────────────────
-# Shorebird Patch  (auto on push to 'shorebird')
-# ──────────────────────────────────────────────
 shorebird-patch:
   stage: patch
   image: ubuntu:22.04
