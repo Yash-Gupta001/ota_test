@@ -48,8 +48,9 @@ class MyHomePage extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => const MapScreen()),
                 );
               },
-              child: const Text('Go to Map'),
+              child: const Text('this is map button'),
             ),
+            const SizedBox(height: 16),
             Text(
               'this is patch 2 updated',
               style: Theme.of(context).textTheme.headlineMedium,
