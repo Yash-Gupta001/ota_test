@@ -14,19 +14,7 @@ shorebird-release:
     - curl --proto '=https' --tlsv1.2 https://raw.githubusercontent.com/shorebirdtech/install/main/install.sh -sSf | bash
     - export PATH="$HOME/.shorebird/bin:$PATH"
   script:
-    - OLD=$(grep '^version:' pubspec.yaml | sed 's/version:[ ]*//')
-    - NAME=$(echo "$OLD" | cut -d'+' -f1)
-    - BUILD=$(echo "$OLD" | cut -d'+' -f2)
-    - NEW_BUILD=$((BUILD + 1))
-    - NEW_VERSION="${NAME}+${NEW_BUILD}"
-    - sed -i "s/^version:.*/version $NEW_VERSION/" pubspec.yaml
-    - echo "Bumped version from $OLD to $NEW_VERSION"
-    - git config user.name "gitlab-ci[bot]"
-    - git config user.email "gitlab-ci[bot]@noreply.gitlab.com"
-    - git remote set-url origin "https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
-    - git add pubspec.yaml
-    - git commit -m "chore: bump build number to ${NEW_VERSION} [skip ci]"
-    - git push origin HEAD:${CI_COMMIT_REF_NAME}
+    - bash scripts/bump_version.sh
     - export PATH="$HOME/.shorebird/bin:$PATH"
     - shorebird release android --artifact=apk
   artifacts:
